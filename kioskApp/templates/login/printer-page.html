@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="../static/styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        main {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        input[type="submit"],
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        fieldset {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        legend {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #777;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header class="title">
+        <h1>Kiosk Check Survey</h1>
+    </header>
+
+    <main>
+        <form id="survey-form" action="{% url 'survey' %}" method="POST">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Printer Information</legend>
+                <li>
+                    <label for="printer">Select a printer:</label>
+                    <select name="printer" id="printer" required>
+                        <option value="">--Please choose an option--</option>
+                        <option value="wcc-bf-lab-bw-1">WCC-BF-LAB-BW-1</option>
+                        <option value="wcc-bf-lab-c-1">WCC-BF-LAB-COLOR-1</option>
+                        <option value="wcc-2f-bw-1">WCC-2F-SOR-BW-1</option>
+                        <option value="wcc-2f-c-1">WCC-2F-SOR-COLOR-1</option>
+                        <option value="wcc-1f-hrk-bw-1">WCC-1F-HRK-BW-1</option>
+                        <option value="wcc-1f-hrk-bw-2">WCC-2F-HRK-BW-2</option>
+                        <option value="lan-2f-lob-bw-2">LAN-2F-LOB-BW-2</option>
+                        <option value="lan-2f-lob-c-1">LAN-2F-LOB-COLOR-1</option>
+                        <option value="lan-2f-221-bw-1">LAN-2F-221-BW-1</option>
+                        <option value="lan-3f-352-bw-1">LAN-3F-352-BW-1</option>
+                        <option value="lan-3f-353-bw-1">LAN-3F-353-BW-1</option>
+                    </select>
+                </li>
+            </fieldset>
+            <fieldset>
+                <legend>Paper Usage</legend>
+                <li>
+                    <label for="reamsUsed">How many reams of paper did you use?</label>
+                    <input type="number" id="reamsUsed" name="reamsUsed" step="1" min="1" max="4" required>
+                </li>
+            </fieldset>
+            <fieldset>
+                <legend>Issue Reporting</legend>
+                <li>
+                    <label for="issues">Select most pressing issue:</label>
+                    <select name="issues" id="issues" required>
+                        <option value="">--Please choose an option--</option>
+                        <option value="misfeed">Paper misfeed</option>
+                        <option value="call-service">Call service</option>
+                        <option value="toner">Toner depleted</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="tonerStatus">Toner Status:</label>
+                    <select name="tonerStatus" id="tonerStatus" required>
+                        <option value="">--Please choose an option--</option>
+                        <option value="full">Full</option>
+                        <option value="low">Low</option>
+                        <option value="empty">Empty</option>
+                    </select>
+                </li>
+                <li>
+                    <label for="issueDescription">Description of Issue:</label>
+                    <input type="text" id="issueDescription" name="issueDescription" placeholder="Describe the issue">
+                </li>
+            </fieldset>
+            <fieldset>
+                <legend>Ticket Information</legend>
+                <li>
+                    <label for="ricohTicket">Ricoh Ticket:</label>
+                    <input type="text" id="ricohTicket" name="ricohTicket" placeholder="Enter Ricoh ticket number">
+                </li>
+                <li>
+                    <label for="serviceNowTicket">ServiceNow Ticket:</label>
+                    <input type="text" id="serviceNowTicket" name="serviceNowTicket" placeholder="Enter ServiceNow ticket number">
+                </li>
+            </fieldset>
+            <div class="button-container">
+                <input id="submit" type="submit" value="Submit">
+            </div>
+        </form>
+        <div class="button-container">
+            <button onclick="window.location.href='{% url 'dashboard' %}'">Go to Dashboard</button>
+        </div>
+    </main>
+
+    <script>
+        $(document).ready(function(){
+            $('#survey-form').on('submit', function(event){
+                event.preventDefault(); // Prevent the form from submitting the default way
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: function(response){
+                        if(response.success){
+                            alert('Survey submitted successfully!'); // Display a success message
+                            $('#survey-form')[0].reset(); // Reset the form fields
+                        } else {
+                            alert('An error occurred.');
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        alert('An error occurred while submitting the survey.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

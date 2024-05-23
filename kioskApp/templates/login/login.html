@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: #f00;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        {% load static %}
+        <img src="{% static 'images/HLS3.png' %}" alt="Logo" style="width: 100%; max-width: 100px; margin-bottom: 20px;">
+        <h1>Kiosk Check System</h1>
+        {% if user.is_authenticated %}
+            <p>Hello, {{ user.username }}!</p>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <label for="username">Harvard ID:</label>
+                <input type="text" id="username" name="username">
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+                <br>
+                <button type="submit">Login</button>
+                {% if form.errors %}
+                    <div class="error-message">
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+    <form id="kioskCheckForm">
+        <!-- ... (existing form elements) ... -->
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>
