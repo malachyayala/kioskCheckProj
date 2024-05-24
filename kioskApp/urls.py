@@ -9,6 +9,7 @@ urlpatterns = [
     path("survey", views.survey, name = "survey"),  # URL for Survey ...../kioskApp/survey
     path('dashboard/', views.dashboard, name='dashboard'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('display-data/', views.displayData, name='display_data'),
+    path('display-data/', views.display_data, name='display_data'),
     path('completion-rate-data/', views.completion_rate_data, name='completion_rate_data'),
+    path('register/', views.register, name='register'),
 ]

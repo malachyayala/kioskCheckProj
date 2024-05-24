@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Prevents scrolling */
+        }
+
+        .register-container {
+            background-color: #fff;
+            padding: 15px; /* Reduced padding */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 320px; /* Adjusted max-width */
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px; /* Reduced margin */
+            font-size: 20px; /* Reduced font size */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px; /* Reduced margin */
+            color: #555;
+            font-size: 13px; /* Reduced font size */
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px; /* Reduced margin */
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px; /* Reduced font size */
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 8px 10px; /* Reduced padding */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px; /* Reduced font size */
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: #f00;
+            margin-top: 10px;
+            font-size: 13px; /* Reduced font size */
+        }
+
+        .login-link {
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+            font-size: 13px; /* Reduced font size */
+            color: #007bff;
+        }
+
+        .login-link:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Register</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+            {% if form.errors %}
+                <div class="error-message">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+        </form>
+        <a class="login-link" href="{% url 'login' %}">Already have an account? Login here</a>
+    </div>
+</body>
+</html>

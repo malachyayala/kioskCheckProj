@@ -26,6 +26,7 @@
 
         .card {
             margin-top: 20px;
+            width: 100%; /* Ensure the cards take the full width available */
         }
 
         .welcome-message {
@@ -88,6 +89,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'survey' %}"><i class="fas fa-clipboard-list"></i> Complete Kiosk Check</a>
                         <a class="dropdown-item" href="{% url 'display_data' %}"><i class="fas fa-chart-bar"></i> View Kiosk Check History</a>
+                        <a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                         {% if user.is_superuser %}
                         <a class="dropdown-item" href="/admin/"><i class="fas fa-tools"></i> Admin Dashboard</a>
                         {% endif %}
@@ -107,8 +109,8 @@
             Welcome, {{ user.username }}!
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-clipboard-list"></i> Complete Kiosk Check</h5>
@@ -117,7 +119,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-chart-bar"></i> View Kiosk Check History</h5>
@@ -126,6 +128,17 @@
                     </div>
                 </div>
             </div>
+            {% if user.is_superuser %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-tools"></i> Admin Dashboard</h5>
+                        <p class="card-text">Access the admin dashboard.</p>
+                        <a href="/admin/" class="btn btn-custom">Go to Admin Dashboard</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
 
         <!-- Example Chart -->

@@ -59,6 +59,15 @@
             color: #f00;
             margin-top: 10px;
         }
+
+        .register-button {
+            background-color: #007bff;
+            margin-top: 10px;
+        }
+
+        .register-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -76,10 +85,10 @@
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <label for="username">Harvard ID:</label>
-                <input type="text" id="username" name="username">
+                <input type="text" id="username" name="username" required>
                 <br>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" required>
                 <br>
                 <button type="submit">Login</button>
                 {% if form.errors %}
@@ -88,12 +97,10 @@
                     </div>
                 {% endif %}
             </form>
+            <a href="{% url 'register' %}">
+                <button class="register-button">Register</button>
+            </a>
         {% endif %}
     </div>
-    <form id="kioskCheckForm">
-        <!-- ... (existing form elements) ... -->
-    </form>
-
-    <script src="script.js"></script>
 </body>
 </html>
