@@ -90,58 +90,34 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="printer">Printer:</label>
-                        <select name="printer" id="printer" class="form-control" required>
-                            <option value="">--Please choose an option--</option>
-                            <option value="wcc-bf-lab-bw-1">WCC-BF-LAB-BW-1</option>
-                            <option value="wcc-bf-lab-c-1">WCC-BF-LAB-COLOR-1</option>
-                            <option value="wcc-2f-bw-1">WCC-2F-SOR-BW-1</option>
-                            <option value="wcc-2f-c-1">WCC-2F-SOR-COLOR-1</option>
-                            <option value="wcc-1f-hrk-bw-1">WCC-1F-HRK-BW-1</option>
-                            <option value="wcc-1f-hrk-bw-2">WCC-2F-HRK-BW-2</option>
-                            <option value="lan-2f-lob-bw-2">LAN-2F-LOB-BW-2</option>
-                            <option value="lan-2f-lob-c-1">LAN-2F-LOB-COLOR-1</option>
-                            <option value="lan-2f-221-bw-1">LAN-2F-221-BW-1</option>
-                            <option value="lan-3f-352-bw-1">LAN-3F-352-BW-1</option>
-                            <option value="lan-3f-353-bw-1">LAN-3F-353-BW-1</option>
-                        </select>
+                        {{ form.printer }}
                     </div>
                     <div class="form-group col-md-6">
                         <label for="reamsUsed">Reams Used:</label>
-                        <input type="number" class="form-control" id="reamsUsed" name="reamsUsed" min="1" max="4" required>
+                        {{ form.reams_used }}
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="issues">Printer Status:</label>
-                    <select name="issues" id="issues" class="form-control" required>
-                        <option value="">--Please choose an option--</option>
-                        <option value="good">Good</option>
-                        <option value="misfeed">Paper misfeed</option>
-                        <option value="call-service">Call service</option>
-                        <option value="toner">Toner depleted</option>
-                    </select>
+                    {{ form.issues }}
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="tonerStatus">Toner Status:</label>
-                        <select name="tonerStatus" id="tonerStatus" class="form-control" required>
-                            <option value="">--Please choose an option--</option>
-                            <option value="full">Full</option>
-                            <option value="low">Low</option>
-                            <option value="empty">Empty</option>
-                        </select>
+                        {{ form.toner_status }}
                     </div>
                     <div class="form-group col-md-6">
                         <label for="ricohTicket">Ricoh Ticket:</label>
-                        <input type="text" class="form-control" id="ricohTicket" name="ricohTicket">
+                        {{ form.ricoh_ticket }}
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="issueDescription">Issue Description:</label>
-                    <textarea class="form-control" id="issueDescription" name="issueDescription"></textarea>
+                    {{ form.issue_description }}
                 </div>
                 <div class="form-group">
                     <label for="serviceNowTicket">ServiceNow Ticket:</label>
-                    <input type="text" class="form-control" id="serviceNowTicket" name="serviceNowTicket">
+                    {{ form.servicenow_ticket }}
                 </div>
                 <button type="submit" class="btn btn-custom btn-block">Submit</button>
             </form>
@@ -154,7 +130,7 @@
     <script>
         $(document).ready(function() {
             $('#survey-form').on('submit', function(event) {
-                var reamsUsed = $('#reamsUsed').val();
+                var reamsUsed = $('#id_reams_used').val();
                 if (reamsUsed < 1 || reamsUsed > 4) {
                     event.preventDefault();
                     alert('Reams Used must be between 1 and 4.');

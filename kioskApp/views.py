@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from .models import KioskCheck
 from .forms import UserRegisterForm
+from .forms import KioskCheckForm
 from django.contrib import messages
 
 
@@ -92,41 +93,19 @@ def login_view(request):
 
 @login_required
 def survey(request):
-    """
-    View to handle the kiosk check survey form submission.
-
-    This view processes the POST request from the survey form, creates a new KioskCheck entry,
-    and redirects to the display data page or returns a JSON response if the request is AJAX.
-
-    :param request: HttpRequest object
-    :return: HttpResponse for GET request, redirect or JsonResponse for POST request
-    """
     if request.method == 'POST':
-        printer = request.POST['printer']
-        reams_used = request.POST['reamsUsed']
-        issues = request.POST['issues']
-        toner_status = request.POST['tonerStatus']
-        issue_description = request.POST['issueDescription']
-        ricoh_ticket = request.POST['ricohTicket']
-        servicenow_ticket = request.POST['serviceNowTicket']
-
-        kiosk_check = KioskCheck.objects.create(
-            user=request.user,
-            printer=printer,
-            reams_used=reams_used,
-            issues=issues,
-            toner_status=toner_status,
-            issue_description=issue_description,
-            ricoh_ticket=ricoh_ticket,
-            servicenow_ticket=servicenow_ticket
-        )
-
-        if request.is_ajax():
-            return JsonResponse({'success': True})
-
-        return redirect('display_data')
-
-    return render(request, 'login/printer-page.html')
+        form = KioskCheckForm(request.POST)
+        if form.is_valid():
+            form.save()
+            if request.is_ajax():
+                return JsonResponse({'success': True})
+            return redirect('display_data')
+        else:
+            if request.is_ajax():
+                return JsonResponse({'errors': form.errors}, status=400)
+    else:
+        form = KioskCheckForm()
+    return render(request, 'login/printer-page.html', {'form': form})
 
 
 @login_required
