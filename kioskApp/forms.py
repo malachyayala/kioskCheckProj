@@ -70,6 +70,7 @@ class KioskCheckForm(forms.ModelForm):
             raise forms.ValidationError('Reams Used must be between 1 and 4.')
         return data
 
+
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     registration_code = forms.CharField(max_length=20)
