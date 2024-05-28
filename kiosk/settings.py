@@ -11,18 +11,17 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 import environ
-from dotenv import load_dotenv
-BASE_DIR = Path(__file__).resolve().parent.parent
 
-env_path = load_dotenv(os.path.join(BASE_DIR, '.env'))
-load_dotenv(env_path)
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 environ.Env.read_env()
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-&psk#na5l=p3q8_a+-$4w1f^lt3lx1c@d*p4x$ymm_rn7pwb87')
-DEBUG = True
-#DEBUG = env.bool('DEBUG', default=False)
+
+SECRET_KEY = 'django-insecure-bylgs$=s5ixx_$90+(xpe6!^i7(nhglx7yl+&9u@h*574lao$z'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -33,11 +32,6 @@ DEBUG = True
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-] # Add your domains here
 
 
 # Application definition
@@ -90,8 +84,16 @@ WSGI_APPLICATION = 'kiosk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+database_url = urlparse(os.getenv('DATABASE_URL'))
 DATABASES = {
-    'default': env.db()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': database_url.path[1:],  # The first character is a slash
+        'USER': database_url.username,
+        'PASSWORD': database_url.password,
+        'HOST': database_url.hostname,
+        'PORT': database_url.port,
+    }
 }
 
 
