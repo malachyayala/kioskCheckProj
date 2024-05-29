@@ -11,27 +11,21 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-from urllib.parse import urlparse
-import environ
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-env = environ.Env()
-environ.Env.read_env()
-
-SECRET_KEY = 'django-insecure-bylgs$=s5ixx_$90+(xpe6!^i7(nhglx7yl+&9u@h*574lao$z'
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-bylgs$=s5ixx_$90+(xpe6!^i7(nhglx7yl+&9u@h*574lao$z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -45,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'csp',
-    'whitenoise.runserver_nostatic',  # Whitenoise for static file management
 ]
 
 MIDDLEWARE = [
@@ -57,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'csp.middleware.CSPMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Whitenoise middleware
 ]
 
 ROOT_URLCONF = 'kiosk.urls'
@@ -84,15 +76,10 @@ WSGI_APPLICATION = 'kiosk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-database_url = urlparse(os.getenv('DATABASE_URL'))
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': database_url.path[1:],  # The first character is a slash
-        'USER': database_url.username,
-        'PASSWORD': database_url.password,
-        'HOST': database_url.hostname,
-        'PORT': database_url.port,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -138,15 +125,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
+
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'kioskApp/static/images'),
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -162,24 +149,3 @@ CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://code.jquery.com", "https
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://stackpath.bootstrapcdn.com", "https://cdnjs.cloudflare.com")
 CSP_IMG_SRC = ("'self'", "data:")
 CSP_FONT_SRC = ("'self'", "https://cdnjs.cloudflare.com")
-
-
-# Logging for better error tracking
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'debug.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
