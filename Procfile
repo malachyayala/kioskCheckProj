@@ -1,1 +1,0 @@
-web: gunicorn kiosk.wsgi

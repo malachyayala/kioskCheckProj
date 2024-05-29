@@ -62,16 +62,6 @@
         .card-text {
             font-size: 1rem;
         }
-
-        .chart-container {
-            margin-top: 40px;
-        }
-
-        .chart-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
@@ -140,55 +130,10 @@
             </div>
             {% endif %}
         </div>
-
-        <!-- Example Chart -->
-        <div class="chart-container text-center">
-            <div class="chart-title">Kiosk Check Completion Rates</div>
-            <canvas id="completionRateChart" width="400" height="200"></canvas>
-        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('{% url "completion_rate_data" %}')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);  // Debugging line to check fetched data
-                    var ctx = document.getElementById('completionRateChart').getContext('2d');
-                    var completionRateChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: data.labels,
-                            datasets: [{
-                                label: 'Completion Rate',
-                                data: data.data,
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                });
-        });
-    </script>
 </body>
 </html>
