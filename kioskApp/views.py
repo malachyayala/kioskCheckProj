@@ -101,7 +101,7 @@ def survey(request):
             kiosk_check.save()
             if request.is_ajax():
                 return JsonResponse({'success': True})
-            return redirect('dashboard')
+            return redirect('display_data')
         else:
             if request.is_ajax():
                 return JsonResponse({'success': False, 'errors': form.errors})
