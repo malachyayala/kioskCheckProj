@@ -39,6 +39,7 @@ class KioskCheckForm(forms.ModelForm):
         ]
 
         model = KioskCheck
+        exclude = ['user']
         fields = [
             'printer', 'reams_used', 'issues', 'toner_status',
             'issue_description', 'ricoh_ticket', 'servicenow_ticket'

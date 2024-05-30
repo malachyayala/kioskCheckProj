@@ -96,13 +96,15 @@ def survey(request):
     if request.method == 'POST':
         form = KioskCheckForm(request.POST)
         if form.is_valid():
-            form.save()
+            kiosk_check = form.save(commit=False)
+            kiosk_check.user = request.user
+            kiosk_check.save()
             if request.is_ajax():
                 return JsonResponse({'success': True})
-            return redirect('display_data')
+            return redirect('dashboard')
         else:
             if request.is_ajax():
-                return JsonResponse({'errors': form.errors}, status=400)
+                return JsonResponse({'success': False, 'errors': form.errors})
     else:
         form = KioskCheckForm()
     return render(request, 'login/printer-page.html', {'form': form})
