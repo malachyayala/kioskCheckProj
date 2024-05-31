@@ -46,7 +46,7 @@ class KioskCheckForm(forms.ModelForm):
         ]
         widgets = {
             'printer': forms.Select(choices=PRINTER_CHOICES, attrs={'class': 'form-control'}),
-            'reams_used': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 4}),
+            'reams_used': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'max': 4}),
             'issues': forms.Select(choices=PRINTER_STATUS_CHOICES, attrs={'class': 'form-control'}),
             'toner_status': forms.Select(choices=TONER_STATUS_CHOICES, attrs={'class': 'form-control'}),
             'issue_description': forms.Textarea(attrs={'class': 'form-control'}),
@@ -67,8 +67,8 @@ class KioskCheckForm(forms.ModelForm):
 
     def clean_reams_used(self):
         data = self.cleaned_data['reams_used']
-        if not (1 <= data <= 4):
-            raise forms.ValidationError('Reams Used must be between 1 and 4.')
+        if not (0 <= data <= 4):
+            raise forms.ValidationError('Reams Used must be between 0 and 4.')
         return data
 
 

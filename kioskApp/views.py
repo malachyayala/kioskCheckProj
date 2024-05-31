@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
@@ -10,16 +10,12 @@ from .forms import KioskCheckForm
 from django.contrib import messages
 
 
-@login_required
 def delete_kiosk_check(request, pk):
-    if request.method == 'DELETE':
-        if request.user.is_superuser:
-            kiosk_check = get_object_or_404(KioskCheck, pk=pk)
-            kiosk_check.delete()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'error': 'You do not have permission to delete this entry.'}, status=403)
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+    if request.method == 'POST':
+        kiosk_check = get_object_or_404(KioskCheck, pk=pk)
+        kiosk_check.delete()
+        return redirect('display_data')  # Assuming 'display_data' is the name of the URL for your table view
+    return HttpResponseForbidden("You are not allowed to access this page.")
 
 
 def register(request):

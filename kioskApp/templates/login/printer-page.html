@@ -131,9 +131,9 @@
         $(document).ready(function() {
             $('#survey-form').on('submit', function(event) {
                 var reamsUsed = $('#id_reams_used').val();
-                if (reamsUsed < 1 || reamsUsed > 4) {
+                if (reamsUsed < 0 || reamsUsed > 4) {
                     event.preventDefault();
-                    alert('Reams Used must be between 1 and 4.');
+                    alert('Reams Used must be between 0 and 4.');
                 }
             });
         });

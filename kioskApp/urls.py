@@ -12,5 +12,5 @@ urlpatterns = [
     path('display-data/', views.display_data, name='display_data'),
     path('completion-rate-data/', views.completion_rate_data, name='completion_rate_data'),
     path('register/', views.register, name='register'),
-    path('delete_kiosk_check/<int:pk>/', views.delete_kiosk_check, name='delete_kiosk_check'),
+    path('delete/<int:pk>/', views.delete_kiosk_check, name='delete_kiosk_check'),
 ]
