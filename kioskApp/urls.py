@@ -13,4 +13,5 @@ urlpatterns = [
     path('completion-rate-data/', views.completion_rate_data, name='completion_rate_data'),
     path('register/', views.register, name='register'),
     path('delete/<int:pk>/', views.delete_kiosk_check, name='delete_kiosk_check'),
+    path('export-data/', views.export_data, name='export_data')
 ]

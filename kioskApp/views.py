@@ -1,6 +1,8 @@
+import openpyxl
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponseForbidden
+from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
@@ -9,6 +11,42 @@ from .forms import UserRegisterForm
 from .forms import KioskCheckForm
 from django.contrib import messages
 
+#make compatabile with mobile
+
+
+@login_required
+def export_data(request):
+    # Create an HttpResponse object with the appropriate Excel header.
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="kiosk_check_data.xlsx"'
+
+    # Create a workbook and add a worksheet.
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    worksheet.title = 'Kiosk Check Data'
+
+    # Define the column headers.
+    columns = ['User', 'Printer', 'Reams Used', 'Issues', 'Toner Status', 'Issue Description', 'Ricoh Ticket', 'ServiceNow Ticket', 'Completed Date']
+    worksheet.append(columns)
+
+    # Get all KioskCheck entries and populate the worksheet.
+    for kiosk_check in KioskCheck.objects.select_related('user').all():
+        row = [
+            kiosk_check.user.username,
+            kiosk_check.printer,
+            kiosk_check.reams_used,
+            kiosk_check.issues,
+            kiosk_check.toner_status,
+            kiosk_check.issue_description,
+            kiosk_check.ricoh_ticket,
+            kiosk_check.servicenow_ticket,
+            kiosk_check.completed_date.strftime('%Y-%m-%d %H:%M:%S')
+        ]
+        worksheet.append(row)
+
+    # Save the workbook to the response.
+    workbook.save(response)
+    return response
 
 def delete_kiosk_check(request, pk):
     if request.method == 'POST':
@@ -108,17 +146,18 @@ def survey(request):
 
 @login_required
 def display_data(request):
-    """
-    View to display all KioskCheck entries.
+    # Get the number of entries per page from the request, default to 10 if not provided
+    entries_per_page = request.GET.get('entries_per_page', 10)
 
-    This view retrieves all KioskCheck entries from the database and renders them on the display
-    data page.
-
-    :param request: HttpRequest object
-    :return: HttpResponse with the rendered display data template
-    """
+    # Retrieve all KioskCheck entries from the database
     data = KioskCheck.objects.select_related('user').all()
-    return render(request, 'login/display_data.html', {'data': data})
+
+    # Paginate the data
+    paginator = Paginator(data, entries_per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'login/display_data.html', {'page_obj': page_obj, 'entries_per_page': entries_per_page})
 
 
 @login_required
