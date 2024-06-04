@@ -1,7 +1,6 @@
-from datetime import timezone
-
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class KioskCheck(models.Model):
@@ -20,7 +19,7 @@ class KioskCheck(models.Model):
     issue_description = models.TextField(blank = True, null = True)
     ricoh_ticket = models.CharField(max_length = 50, blank = True, null = True)
     servicenow_ticket = models.CharField(max_length = 50, blank = True, null = True)
-    completed_date = models.DateTimeField(default = timezone.now)
+    completed_date = models.DateTimeField(default = timezone.now())
     charging_station = models.CharField(max_length = 100, blank = True, null = True)
     computer = models.CharField(max_length = 100, blank = True, null = True)
 
