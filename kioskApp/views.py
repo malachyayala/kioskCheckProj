@@ -145,13 +145,12 @@ def survey(request):
 
 @login_required
 def display_data(request):
-    # Get the number of entries per page from the request, default to 10 if not provided
     entries_per_page = request.GET.get('entries_per_page', 10)
+    entries_per_page = int(entries_per_page)
 
-    # Retrieve all KioskCheck entries from the database
-    data = KioskCheck.objects.select_related('user').all()
+    # Order the queryset by 'completed_date'
+    data = KioskCheck.objects.all().order_by('-completed_date')  # or 'completed_date' for ascending order
 
-    # Paginate the data
     paginator = Paginator(data, entries_per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
