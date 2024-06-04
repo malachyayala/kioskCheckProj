@@ -51,6 +51,10 @@
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
 
+        .conditional-fields {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .container {
                 width: 90%;
@@ -100,7 +104,7 @@
 
     <div class="container">
         <div class="survey-form">
-            <h2 class="text-center">Kiosk Survey</h2>
+            <h2 class="text-center">Kiosk Check</h2>
             <form method="POST" action="{% url 'survey' %}" id="survey-form">
                 {% csrf_token %}
                 <div class="form-row">
@@ -125,6 +129,20 @@
                     <div class="form-group col-md-6">
                         <label for="ricohTicket">Ricoh Ticket:</label>
                         {{ form.ricoh_ticket }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="additionalCheck" name="additionalCheck" onclick="toggleAdditionalFields()">
+                    <label for="additionalCheck">Long Kiosk Check</label>
+                </div>
+                <div class="conditional-fields" id="conditional-fields">
+                    <div class="form-group">
+                        <label for="additionalField1">Charging Station:</label>
+                        {{ form.charging_station }}
+                    </div>
+                    <div class="form-group">
+                        <label for="additionalField2">Computers:</label>
+                        {{ form.computer }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -153,6 +171,16 @@
                 }
             });
         });
+
+        function toggleAdditionalFields() {
+            var checkBox = document.getElementById("additionalCheck");
+            var additionalFields = document.getElementById("conditional-fields");
+            if (checkBox.checked == true) {
+                additionalFields.style.display = "block";
+            } else {
+                additionalFields.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>

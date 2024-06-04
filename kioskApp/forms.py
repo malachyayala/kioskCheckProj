@@ -42,7 +42,8 @@ class KioskCheckForm(forms.ModelForm):
         exclude = ['user']
         fields = [
             'printer', 'reams_used', 'issues', 'toner_status',
-            'issue_description', 'ricoh_ticket', 'servicenow_ticket'
+            'issue_description', 'ricoh_ticket', 'servicenow_ticket',
+            'charging_station', 'computer',
         ]
         widgets = {
             'printer': forms.Select(choices=PRINTER_CHOICES, attrs={'class': 'form-control'}),
@@ -52,6 +53,8 @@ class KioskCheckForm(forms.ModelForm):
             'issue_description': forms.Textarea(attrs={'class': 'form-control'}),
             'ricoh_ticket': forms.TextInput(attrs={'class': 'form-control'}),
             'servicenow_ticket': forms.TextInput(attrs={'class': 'form-control'}),
+            'charging_station': forms.TextInput(attrs = {'class': 'form-control'}),
+            'computer': forms.TextInput(attrs = {'class': 'form-control'}),
         }
 
     def clean_printer(self):

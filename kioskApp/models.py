@@ -19,6 +19,8 @@ class KioskCheck(models.Model):
     ricoh_ticket = models.CharField(max_length = 50, blank = True, null = True)
     servicenow_ticket = models.CharField(max_length = 50, blank = True, null = True)
     completed_date = models.DateTimeField(auto_now_add = True)
+    charging_station = models.CharField(max_length = 100, blank = True, null = True)
+    computer = models.CharField(max_length = 100, blank = True, null = True)
 
     def __str__(self):
         """

@@ -11,8 +11,6 @@ from .forms import UserRegisterForm
 from .forms import KioskCheckForm
 from django.contrib import messages
 
-#make compatabile with mobile
-
 
 @login_required
 def export_data(request):
@@ -47,6 +45,7 @@ def export_data(request):
     # Save the workbook to the response.
     workbook.save(response)
     return response
+
 
 def delete_kiosk_check(request, pk):
     if request.method == 'POST':
