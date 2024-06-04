@@ -16,7 +16,7 @@ from django.contrib import messages
 def export_data(request):
     # Create an HttpResponse object with the appropriate Excel header.
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename="kiosk_check_data.xlsx"'
+    response['Content-Disposition'] = 'attachment; filename="kioskCheckHistory.xlsx"'
 
     # Create a workbook and add a worksheet.
     workbook = openpyxl.Workbook()

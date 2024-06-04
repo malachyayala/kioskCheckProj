@@ -89,8 +89,9 @@ WSGI_APPLICATION = 'kiosk.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL')
+        default=os.getenv('DATABASE_URL'),
     )
+
 }
 
 
@@ -123,7 +124,7 @@ LOGOUT_REDIRECT_URL = '/kioskApp/'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "US/Eastern"
 
 USE_I18N = True
 
