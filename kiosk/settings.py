@@ -10,9 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from importlib_metadata import packages_distributions
+from datetime import timedelta
 from pathlib import Path
 import dj_database_url
 import environ
+
 
 # Initialize environment variables
 env = environ.Env(
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'csp',
     'whitenoise.runserver_nostatic',
+    'axes',
 
 ]
 
@@ -60,7 +64,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'csp.middleware.CSPMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'kiosk.urls'
@@ -162,3 +167,15 @@ CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://code.jquery.com", "https
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://stackpath.bootstrapcdn.com", "https://cdnjs.cloudflare.com")
 CSP_IMG_SRC = ("'self'", "data:")
 CSP_FONT_SRC = ("'self'", "https://cdnjs.cloudflare.com")
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AXES_FAILURE_LIMIT = 5  # Number of allowed login attempts
+AXES_COOLOFF_TIME = timedelta(minutes=30)  # Lockout time in minutes
+AXES_LOCKOUT_URL = '/account_locked/'  # Redirect URL after lockout
+AXES_RESET_ON_SUCCESS = True  # Reset login attempts on successful login
+
+# Ensure you are using the correct authentication backends

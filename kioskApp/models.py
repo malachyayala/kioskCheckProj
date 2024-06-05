@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
 class KioskCheck(models.Model):
     """
     Model to represent a Kiosk Check entry.
