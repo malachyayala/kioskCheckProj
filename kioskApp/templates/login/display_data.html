@@ -162,7 +162,6 @@
                     <th>Issue Description</th>
                     <th>Ricoh Ticket</th>
                     <th>ServiceNow Ticket</th>
-                    <th>Charging Station</th>
                     <th>Computer</th>
                     <th>Completed Date</th>
                     {% if user.is_superuser %}
@@ -181,7 +180,6 @@
                     <td>{{ item.issue_description }}</td>
                     <td>{{ item.ricoh_ticket }}</td>
                     <td>{{ item.servicenow_ticket }}</td>
-                    <td>{{ item.charging_station }}</td>
                     <td>{{ item.computer }}</td>
                     <td>{{ item.completed_date }}</td>
                     {% if user.is_superuser %}

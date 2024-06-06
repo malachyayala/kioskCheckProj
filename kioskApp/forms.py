@@ -10,17 +10,17 @@ class KioskCheckForm(forms.ModelForm):
     class Meta:
         PRINTER_CHOICES = [
             ('', '--Please choose an option--'),
-            ('wcc-bf-lab-bw-1', 'WCC-BF-LAB-BW-1'),
+            ('wcc-bf-lab-bw-1', 'WCC-BF-LAB-BW-1 and computers'),
             ('wcc-bf-lab-c-1', 'WCC-BF-LAB-COLOR-1'),
-            ('wcc-2f-bw-1', 'WCC-2F-SOR-BW-1'),
+            ('wcc-2f-bw-1', 'WCC-2F-SOR-BW-1 and computers'),
             ('wcc-2f-c-1', 'WCC-2F-SOR-COLOR-1'),
-            ('wcc-1f-hrk-bw-1', 'WCC-1F-HRK-BW-1'),
+            ('wcc-1f-hrk-bw-1', 'WCC-1F-HRK-BW-1 and computers'),
             ('wcc-1f-hrk-bw-2', 'WCC-2F-HRK-BW-2'),
-            ('lan-2f-lob-bw-2', 'LAN-2F-LOB-BW-2'),
+            ('lan-2f-lob-bw-2', 'LAN-2F-LOB-BW-2 and computers'),
             ('lan-2f-lob-c-1', 'LAN-2F-LOB-COLOR-1'),
             ('lan-2f-221-bw-1', 'LAN-2F-221-BW-1'),
-            ('lan-3f-352-bw-1', 'LAN-3F-352-BW-1'),
-            ('lan-3f-353-bw-1', 'LAN-3F-353-BW-1'),
+            ('lan-3f-352-bw-1', 'LAN-3F-352-BW-1 and computers'),
+            ('lan-3f-353-bw-1', 'LAN-3F-353-BW-1 and computers'),
         ]
 
         PRINTER_STATUS_CHOICES = [
@@ -43,7 +43,7 @@ class KioskCheckForm(forms.ModelForm):
         fields = [
             'printer', 'reams_used', 'issues', 'toner_status',
             'issue_description', 'ricoh_ticket', 'servicenow_ticket',
-            'charging_station', 'computer',
+            'computer',
         ]
         widgets = {
             'printer': forms.Select(choices=PRINTER_CHOICES, attrs={'class': 'form-control'}),
@@ -53,7 +53,6 @@ class KioskCheckForm(forms.ModelForm):
             'issue_description': forms.Textarea(attrs={'class': 'form-control'}),
             'ricoh_ticket': forms.TextInput(attrs={'class': 'form-control'}),
             'servicenow_ticket': forms.TextInput(attrs={'class': 'form-control'}),
-            'charging_station': forms.TextInput(attrs = {'class': 'form-control'}),
             'computer': forms.TextInput(attrs = {'class': 'form-control'}),
         }
 
