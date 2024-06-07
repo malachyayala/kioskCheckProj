@@ -6,10 +6,50 @@ from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
-from .models import KioskCheck
-from .forms import UserRegisterForm
+from .models import KioskCheck, ChargingStationCheck
+from .forms import UserRegisterForm, ChargingStationForm
 from .forms import KioskCheckForm
 from django.contrib import messages
+
+
+@login_required
+def delete_charging_station_check(request, pk):
+    if not request.user.is_superuser:
+        messages.error(request, "You do not have permission to delete this record.")
+        return redirect('display_charging_station_data')
+
+    item = get_object_or_404(ChargingStationCheck, pk = pk)
+    item.delete()
+    messages.success(request, "The record has been deleted successfully.")
+    return redirect('display_charging_station_data')
+
+
+def display_charging_station_data(request):
+    checks = ChargingStationCheck.objects.all().order_by('-completed_date')
+    paginator = Paginator(checks, 10)  # Show 10 checks per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'login/display_charging_station_data.html', context)
+
+
+def charging_station_view(request):
+    if request.method == 'POST':
+        form = ChargingStationForm(request.POST)
+        if form.is_valid():
+            charging_station_check = form.save(commit = False)
+            charging_station_check.user = request.user
+            charging_station_check.save()
+            return redirect('display_charging_station_data')  # Redirect to a new URL or render a success message
+    else:
+        form = ChargingStationForm()
+
+    return render(request, 'login/charging_station.html', {'form': form})
 
 
 @login_required

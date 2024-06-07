@@ -4,10 +4,8 @@ To add:
 - fix sizing
 - long kiosk check (add a check determine this)
 
-- change "long kiosk check" button to computers button
-- seperate form for charging station/long kiosk check
-- add "and computers" to printing stations that also have computers
 - add a description issue for computers √
+- add service now ticket for 
 - make computer field a drop down with options
   - Missing items
   - Network

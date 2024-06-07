@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import bleach
-from .models import KioskCheck
+from .models import KioskCheck, ChargingStationCheck
 
 
 class KioskCheckForm(forms.ModelForm):
@@ -38,12 +38,21 @@ class KioskCheckForm(forms.ModelForm):
             ('empty', 'Empty'),
         ]
 
+        COMPUTER_ISSUE_CHOICES = [
+            ('', '--Please choose an option--'),
+            ('missing_items', 'Missing items'),
+            ('network', 'Network'),
+            ('display_issue', 'Display issue'),
+            ('all_good', 'All good'),
+            ('unresponsive', 'Unresponsive'),
+        ]
+
         model = KioskCheck
         exclude = ['user']
         fields = [
             'printer', 'reams_used', 'issues', 'toner_status',
             'issue_description', 'ricoh_ticket', 'servicenow_ticket',
-            'computer',
+            'computer', 'computer_issue',
         ]
         widgets = {
             'printer': forms.Select(choices=PRINTER_CHOICES, attrs={'class': 'form-control'}),
@@ -53,8 +62,10 @@ class KioskCheckForm(forms.ModelForm):
             'issue_description': forms.Textarea(attrs={'class': 'form-control'}),
             'ricoh_ticket': forms.TextInput(attrs={'class': 'form-control'}),
             'servicenow_ticket': forms.TextInput(attrs={'class': 'form-control'}),
-            'computer': forms.TextInput(attrs = {'class': 'form-control'}),
+            'computer': forms.TextInput(attrs={'class': 'form-control'}),
+            'computer_issue': forms.Select(choices=COMPUTER_ISSUE_CHOICES, attrs={'class': 'form-control'}),
         }
+
 
     def clean_printer(self):
         data = self.cleaned_data['printer']
@@ -87,3 +98,30 @@ class UserRegisterForm(UserCreationForm):
         if code != 'HLSITS':
             raise forms.ValidationError('Invalid registration code.')
         return code
+
+
+class ChargingStationForm(forms.ModelForm):
+    class Meta:
+        model = ChargingStationCheck
+        fields = ['location', 'issue_description', 'servicenow_ticket']
+
+    CHARGING_STATION_LOCATIONS = [
+        ('location1', 'Location 1'),
+        ('location2', 'Location 2'),
+        ('location3', 'Location 3'),
+        ('location4', 'Location 4'),
+        ('location5', 'Location 5'),
+        ('location6', 'Location 6'),
+        ('location7', 'Location 7'),
+        ('location8', 'Location 8'),
+        ('location9', 'Location 9'),
+        ('location10', 'Location 10'),
+        ('location11', 'Location 11'),
+        ('location12', 'Location 12'),
+        ('location13', 'Location 13'),
+    ]
+
+    location = forms.ChoiceField(choices=CHARGING_STATION_LOCATIONS, label="Charging Station Location", required=True)
+    issue_description = forms.CharField(widget=forms.Textarea, label="Issue Description", required=True)
+    servicenow_ticket = forms.CharField(widget=forms.TextInput(attrs={'size': '20'}))
+
