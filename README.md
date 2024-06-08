@@ -4,11 +4,11 @@ To add:
 - fix sizing
 - long kiosk check (add a check determine this)
 
-- add a description issue for computers √
-- add service now ticket for 
-- make computer field a drop down with options
-  - Missing items
-  - Network
-  - Display issue
-  - All good
-  - Unresponsive
+- add locations for charging location as well as status drop down
+- change "all good" language to "No issues found"
+- actual readme, specifically for admin side and how to use website
+  - specifically for new co-ops for everything
+- add an options edit possibility
+- ask kayli for doc help
+- add harvard branding
+- 

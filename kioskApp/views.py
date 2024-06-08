@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponseForbidden, HttpResponse
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, get_backends
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
 from .models import KioskCheck, ChargingStationCheck
@@ -107,7 +107,16 @@ def register(request):
             user = form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            auth_login(request, user)
+
+            # Determine the correct backend
+            backends = get_backends()
+            for backend in backends:
+                if hasattr(backend, 'get_user'):
+                    user.backend = f"{backend.__module__}.{backend.__class__.__name__}"
+                    break
+
+            auth_login(request, user, backend = user.backend)
+
             return redirect('dashboard')
     else:
         form = UserRegisterForm()
