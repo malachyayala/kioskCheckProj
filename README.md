@@ -4,7 +4,7 @@ To add:
 - fix sizing
 - long kiosk check (add a check determine this)
 
-- add locations for charging location as well as status drop down
+- add status drop down
 - change "all good" language to "No issues found"
 - actual readme, specifically for admin side and how to use website
   - specifically for new co-ops for everything

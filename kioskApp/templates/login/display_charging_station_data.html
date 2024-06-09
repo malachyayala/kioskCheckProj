@@ -130,6 +130,7 @@
                 <tr>
                     <th>User</th>
                     <th>Location</th>
+                    <th>Charger Status</th>
                     <th>Issue Description</th>
                     <th>ServiceNow Ticket</th>
                     <th>Completed Date</th>
@@ -143,6 +144,7 @@
                 <tr>
                     <td>{{ item.user.username }}</td>
                     <td>{{ item.location }}</td>
+                    <td>{{ item.get_charger_status_display }}</td>
                     <td>{{ item.issue_description }}</td>
                     <td>{{ item.servicenow_ticket }}</td>
                     <td>{{ item.completed_date }}</td>

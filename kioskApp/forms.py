@@ -25,7 +25,7 @@ class KioskCheckForm(forms.ModelForm):
 
         PRINTER_STATUS_CHOICES = [
             ('', '--Please choose an option--'),
-            ('good', 'Good'),
+            ('no_issues', 'No issues found'),
             ('misfeed', 'Paper misfeed'),
             ('call-service', 'Call service'),
             ('toner', 'Toner depleted'),
@@ -43,7 +43,7 @@ class KioskCheckForm(forms.ModelForm):
             ('missing_items', 'Missing items'),
             ('network', 'Network'),
             ('display_issue', 'Display issue'),
-            ('all_good', 'All good'),
+            ('no_issues', 'No issues found'),
             ('unresponsive', 'Unresponsive'),
         ]
 
@@ -103,25 +103,34 @@ class UserRegisterForm(UserCreationForm):
 class ChargingStationForm(forms.ModelForm):
     class Meta:
         model = ChargingStationCheck
-        fields = ['location', 'issue_description', 'servicenow_ticket']
+        fields = ['location', 'charger_status', 'issue_description', 'servicenow_ticket']
 
     CHARGING_STATION_LOCATIONS = [
-        ('location1', 'Location 1'),
-        ('location2', 'Location 2'),
-        ('location3', 'Location 3'),
-        ('location4', 'Location 4'),
-        ('location5', 'Location 5'),
-        ('location6', 'Location 6'),
-        ('location7', 'Location 7'),
-        ('location8', 'Location 8'),
-        ('location9', 'Location 9'),
-        ('location10', 'Location 10'),
-        ('location11', 'Location 11'),
-        ('location12', 'Location 12'),
-        ('location13', 'Location 13'),
+        ('', '--Please choose an option--'),
+        ('wcc-bf-lab', 'WCC-BF-LAB'),
+        ('wcc-1f-hl-east', 'WCC-1F-HL-EAST'),
+        ('wcc-1f-hl-west', 'WCC-1F-HL-WEST'),
+        ('wcc-1f-hrkdin', 'WCC-1F-HRKDIN'),
+        ('wcc-1f-hrkgme', 'WCC-1F-HRKGME'),
+        ('wcc-2f-hrkdin-east', 'WCC-2F-HRKDIN-EAST'),
+        ('wcc-2f-hrkdin-west', 'WCC-2F-HRKDIN-WEST'),
+        ('wcc-2f-sor', 'WCC-2F-SOR'),
+        ('wcc-3f-3085', 'WCC-3F-3085'),
+        ('lan-2f-lemann', 'LAN-2F-LEMANN'),
+        ('lan-2f-fishman', 'LAN-2F-FISHMAN'),
+        ('lan-3f-337', 'LAN-3F-337'),
+        ('lan-4f-rr', 'LAN-4F-RR'),
+    ]
+
+    CHARGER_STATUS_CHOICES = [
+        ('', '--Please choose an option--'),
+        ('no_issues', 'No issues found'),
+        ('no_charge', 'Does not charge'),
+        ('cable-malfunction', 'Cable malfunction'),
+        ('test', 'Test'),
     ]
 
     location = forms.ChoiceField(choices=CHARGING_STATION_LOCATIONS, label="Charging Station Location", required=True)
-    issue_description = forms.CharField(widget=forms.Textarea, label="Issue Description", required=True)
-    servicenow_ticket = forms.CharField(widget=forms.TextInput(attrs={'size': '20'}))
-
+    charger_status = forms.ChoiceField(choices=CHARGER_STATUS_CHOICES, label="Charger Status", required=True)
+    issue_description = forms.CharField(widget=forms.Textarea, label="Issue Description", required=False)
+    servicenow_ticket = forms.CharField(widget=forms.TextInput(attrs={'size': '20'}), required=False)
