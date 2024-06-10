@@ -5,7 +5,8 @@ from django.contrib.auth import views as auth_views
 from .views import charging_station_view, display_charging_station_data
 
 urlpatterns = [
-    path("", auth_views.LoginView.as_view(template_name='login/login.html'), name="login"),  # Base URL for
+    path('', views.root_redirect, name='root_redirect'),  # Base URL for
+    path('login/', views.login_view, name='login'),
     # kioskApp: ...../kioskApp/
     path("survey", views.survey, name = "survey"),  # URL for Survey ...../kioskApp/survey
     path('dashboard/', views.dashboard, name='dashboard'),

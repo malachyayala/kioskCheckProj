@@ -12,6 +12,13 @@ from .forms import KioskCheckForm
 from django.contrib import messages
 
 
+def root_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')  # Replace 'dashboard' with your actual dashboard URL name
+    else:
+        return redirect('login')
+
+
 @login_required
 def delete_charging_station_check(request, pk):
     if not request.user.is_superuser:
@@ -153,20 +160,15 @@ def completion_rate_data(request):
 
 
 def login_view(request):
-    """
-    View to handle user login.
-
-    This view authenticates the user using the provided username and password. If authentication
-    is successful, the user is redirected to the index page. If authentication fails, an error
-    message is displayed.
-    """
-    if request.method == "POST":
+    if request.user.is_authenticated:
+        return redirect('dashboard')  # Replace 'dashboard' with your actual dashboard URL name
+    if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            return redirect('index')
+            return redirect('dashboard')  # Replace 'dashboard' with your actual dashboard URL name
         else:
             return render(request, 'login/login.html', {'error': 'Invalid username or password'})
     return render(request, 'login/login.html')

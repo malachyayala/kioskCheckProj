@@ -112,6 +112,7 @@ class ChargingStationForm(forms.ModelForm):
         ('wcc-1f-hl-west', 'WCC-1F-HL-WEST'),
         ('wcc-1f-hrkdin', 'WCC-1F-HRKDIN'),
         ('wcc-1f-hrkgme', 'WCC-1F-HRKGME'),
+        ('wcc-1f-hrkdin-piano', 'WCC-1F-HRKDIN-PIANO'),
         ('wcc-2f-hrkdin-east', 'WCC-2F-HRKDIN-EAST'),
         ('wcc-2f-hrkdin-west', 'WCC-2F-HRKDIN-WEST'),
         ('wcc-2f-sor', 'WCC-2F-SOR'),
