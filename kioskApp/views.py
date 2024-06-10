@@ -30,7 +30,7 @@ def delete_charging_station_check(request, pk):
     messages.success(request, "The record has been deleted successfully.")
     return redirect('display_charging_station_data')
 
-
+@login_required
 def display_charging_station_data(request):
     checks = ChargingStationCheck.objects.all().order_by('-completed_date')
     paginator = Paginator(checks, 10)  # Show 10 checks per page
@@ -44,12 +44,12 @@ def display_charging_station_data(request):
 
     return render(request, 'login/display_charging_station_data.html', context)
 
-
+@login_required
 def charging_station_view(request):
     if request.method == 'POST':
         form = ChargingStationForm(request.POST)
         if form.is_valid():
-            charging_station_check = form.save(commit = False)
+            charging_station_check = form.save(commit=False)
             charging_station_check.user = request.user
             charging_station_check.save()
             return redirect('display_charging_station_data')  # Redirect to a new URL or render a success message
@@ -182,6 +182,7 @@ def survey(request):
         if form.is_valid():
             kiosk_check = form.save(commit=False)
             kiosk_check.user = request.user
+            kiosk_check.printer = form.cleaned_data['printer']
             kiosk_check.save()
             if request.is_ajax():
                 return JsonResponse({'success': True})

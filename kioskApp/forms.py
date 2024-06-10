@@ -2,27 +2,15 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import bleach
-from .models import KioskCheck, ChargingStationCheck
+from .models import KioskCheck, ChargingStationCheck, PrinterLocation, ChargingStationLocation
 
 
 class KioskCheckForm(forms.ModelForm):
+    printer = forms.ModelChoiceField(queryset = PrinterLocation.objects.all(),
+                                     empty_label = "--Please choose an option--",
+                                     widget = forms.Select(attrs = {'class': 'form-control'}))
 
     class Meta:
-        PRINTER_CHOICES = [
-            ('', '--Please choose an option--'),
-            ('wcc-bf-lab-bw-1', 'WCC-BF-LAB-BW-1 and computers'),
-            ('wcc-bf-lab-c-1', 'WCC-BF-LAB-COLOR-1'),
-            ('wcc-2f-bw-1', 'WCC-2F-SOR-BW-1 and computers'),
-            ('wcc-2f-c-1', 'WCC-2F-SOR-COLOR-1'),
-            ('wcc-1f-hrk-bw-1', 'WCC-1F-HRK-BW-1 and computers'),
-            ('wcc-1f-hrk-bw-2', 'WCC-2F-HRK-BW-2'),
-            ('lan-2f-lob-bw-2', 'LAN-2F-LOB-BW-2 and computers'),
-            ('lan-2f-lob-c-1', 'LAN-2F-LOB-COLOR-1'),
-            ('lan-2f-221-bw-1', 'LAN-2F-221-BW-1'),
-            ('lan-3f-352-bw-1', 'LAN-3F-352-BW-1 and computers'),
-            ('lan-3f-353-bw-1', 'LAN-3F-353-BW-1 and computers'),
-        ]
-
         PRINTER_STATUS_CHOICES = [
             ('', '--Please choose an option--'),
             ('no_issues', 'No issues found'),
@@ -55,27 +43,25 @@ class KioskCheckForm(forms.ModelForm):
             'computer', 'computer_issue',
         ]
         widgets = {
-            'printer': forms.Select(choices=PRINTER_CHOICES, attrs={'class': 'form-control'}),
-            'reams_used': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'max': 4}),
-            'issues': forms.Select(choices=PRINTER_STATUS_CHOICES, attrs={'class': 'form-control'}),
-            'toner_status': forms.Select(choices=TONER_STATUS_CHOICES, attrs={'class': 'form-control'}),
-            'issue_description': forms.Textarea(attrs={'class': 'form-control'}),
-            'ricoh_ticket': forms.TextInput(attrs={'class': 'form-control'}),
-            'servicenow_ticket': forms.TextInput(attrs={'class': 'form-control'}),
-            'computer': forms.TextInput(attrs={'class': 'form-control'}),
-            'computer_issue': forms.Select(choices=COMPUTER_ISSUE_CHOICES, attrs={'class': 'form-control'}),
+            'reams_used': forms.NumberInput(attrs = {'class': 'form-control', 'min': 0, 'max': 4}),
+            'issues': forms.Select(choices = PRINTER_STATUS_CHOICES, attrs = {'class': 'form-control'}),
+            'toner_status': forms.Select(choices = TONER_STATUS_CHOICES, attrs = {'class': 'form-control'}),
+            'issue_description': forms.Textarea(attrs = {'class': 'form-control'}),
+            'ricoh_ticket': forms.TextInput(attrs = {'class': 'form-control'}),
+            'servicenow_ticket': forms.TextInput(attrs = {'class': 'form-control'}),
+            'computer': forms.TextInput(attrs = {'class': 'form-control'}),
+            'computer_issue': forms.Select(choices = COMPUTER_ISSUE_CHOICES, attrs = {'class': 'form-control'}),
         }
-
 
     def clean_printer(self):
         data = self.cleaned_data['printer']
-        cleaned_data = bleach.clean(data, tags=[])
+        cleaned_data = bleach.clean(data.name, tags=[])
         return cleaned_data
 
     def clean_issue_description(self):
         data = self.cleaned_data['issue_description']
         allowed_tags = ['b', 'i', 'u', 'a', 'p']
-        cleaned_data = bleach.clean(data, tags=allowed_tags)
+        cleaned_data = bleach.clean(data, tags = allowed_tags)
         return cleaned_data
 
     def clean_reams_used(self):
@@ -87,7 +73,7 @@ class KioskCheckForm(forms.ModelForm):
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
-    registration_code = forms.CharField(max_length=20)
+    registration_code = forms.CharField(max_length = 20)
 
     class Meta:
         model = User
@@ -105,24 +91,6 @@ class ChargingStationForm(forms.ModelForm):
         model = ChargingStationCheck
         fields = ['location', 'charger_status', 'issue_description', 'servicenow_ticket']
 
-    CHARGING_STATION_LOCATIONS = [
-        ('', '--Please choose an option--'),
-        ('wcc-bf-lab', 'WCC-BF-LAB'),
-        ('wcc-1f-hl-east', 'WCC-1F-HL-EAST'),
-        ('wcc-1f-hl-west', 'WCC-1F-HL-WEST'),
-        ('wcc-1f-hrkdin', 'WCC-1F-HRKDIN'),
-        ('wcc-1f-hrkgme', 'WCC-1F-HRKGME'),
-        ('wcc-1f-hrkdin-piano', 'WCC-1F-HRKDIN-PIANO'),
-        ('wcc-2f-hrkdin-east', 'WCC-2F-HRKDIN-EAST'),
-        ('wcc-2f-hrkdin-west', 'WCC-2F-HRKDIN-WEST'),
-        ('wcc-2f-sor', 'WCC-2F-SOR'),
-        ('wcc-3f-3085', 'WCC-3F-3085'),
-        ('lan-2f-lemann', 'LAN-2F-LEMANN'),
-        ('lan-2f-fishman', 'LAN-2F-FISHMAN'),
-        ('lan-3f-337', 'LAN-3F-337'),
-        ('lan-4f-rr', 'LAN-4F-RR'),
-    ]
-
     CHARGER_STATUS_CHOICES = [
         ('', '--Please choose an option--'),
         ('no_issues', 'No issues found'),
@@ -131,7 +99,7 @@ class ChargingStationForm(forms.ModelForm):
         ('test', 'Test'),
     ]
 
-    location = forms.ChoiceField(choices=CHARGING_STATION_LOCATIONS, label="Charging Station Location", required=True)
+    location = forms.ModelChoiceField(queryset=ChargingStationLocation.objects.all(), label="Charging Station Location", required=True)
     charger_status = forms.ChoiceField(choices=CHARGER_STATUS_CHOICES, label="Charger Status", required=True)
     issue_description = forms.CharField(widget=forms.Textarea, label="Issue Description", required=False)
     servicenow_ticket = forms.CharField(widget=forms.TextInput(attrs={'size': '20'}), required=False)

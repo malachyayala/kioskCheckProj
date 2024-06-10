@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import PrinterLocation, ChargingStationLocation
 
-# Register your models here.
+admin.site.register(PrinterLocation)
+admin.site.register(ChargingStationLocation)
