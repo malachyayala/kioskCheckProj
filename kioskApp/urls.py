@@ -20,4 +20,5 @@ urlpatterns = [
     path('display_charging_station_data/', display_charging_station_data, name='display_charging_station_data'),
     path('delete_charging_station_check/<int:pk>/', views.delete_charging_station_check,
          name='delete_charging_station_check'),
+    path('export_charging_station_data/', views.export_charging_station_data, name='export_charging_station_data'),
 ]

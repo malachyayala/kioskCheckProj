@@ -89,6 +89,11 @@
         .btn-danger:hover {
             background-color: #c82333;
         }
+
+        .export-button {
+            float: right;
+            margin: 10px auto;
+        }
     </style>
 </head>
 <body>
@@ -125,6 +130,12 @@
 
     <div class="container">
         <h1>Charging Station Check Data</h1>
+
+        <!-- Export data button -->
+        <form method="get" action="{% url 'export_charging_station_data' %}" class="export-button">
+            <button type="submit" class="btn btn-custom">Export Data</button>
+        </form>
+
         <table class="table table-striped mt-3">
             <thead>
                 <tr>

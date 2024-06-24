@@ -10,6 +10,31 @@ from .models import KioskCheck, ChargingStationCheck
 from .forms import UserRegisterForm, ChargingStationForm
 from .forms import KioskCheckForm
 from django.contrib import messages
+import pandas as pd
+
+
+def export_charging_station_data(request):
+    # Query the data
+    checks = ChargingStationCheck.objects.all().values(
+        'user__username', 'location', 'charger_status', 'issue_description', 'servicenow_ticket', 'completed_date'
+    )
+
+    # Convert the queryset to a pandas DataFrame
+    df = pd.DataFrame.from_records(checks)
+
+    # Convert timezone-aware datetimes to naive datetimes
+    if not df.empty:
+        df['completed_date'] = df['completed_date'].apply(lambda x: x.replace(tzinfo=None))
+
+    # Create an HttpResponse object with the appropriate Excel header
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=charging_station_data.xlsx'
+
+    # Use pandas to create an Excel writer
+    with pd.ExcelWriter(response, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Charging Station Data')
+
+    return response
 
 
 def root_redirect(request):
