@@ -33,6 +33,7 @@ class KioskCheckForm(forms.ModelForm):
             ('display_issue', 'Display issue'),
             ('no_issues', 'No issues found'),
             ('unresponsive', 'Unresponsive'),
+            ('other', 'Other'),
         ]
 
         model = KioskCheck
