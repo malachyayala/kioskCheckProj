@@ -96,7 +96,6 @@ class ChargingStationForm(forms.ModelForm):
         ('no_issues', 'No issues found'),
         ('no_charge', 'Does not charge'),
         ('cable-malfunction', 'Cable malfunction'),
-        ('test', 'Test'),
     ]
 
     location = forms.ModelChoiceField(queryset=ChargingStationLocation.objects.all(), label="Charging Station Location", required=True)
